@@ -11,5 +11,5 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 login = LoginManager(app)
-login.login_view = 'login' # to tell flask-login what is the view function/endpoint. Chapter 5.
+login.login_view = 'login' # to tell flask-login what is the view function/endpoint. Chapter 5. uSED BY @login_required to force login users.
 from app import routes, models
