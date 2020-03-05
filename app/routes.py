@@ -1,14 +1,15 @@
 from flask import render_template, flash, redirect
-from app import app, db
-from app.forms import LoginForm, RegistrationForm, EditProfileForm
 from flask import url_for
+from flask import request
 from flask_login import current_user, login_user
 from flask_login import logout_user, login_required
-from app.models import User
-from flask import request
+
 from werkzeug.urls import url_parse
 from datetime import datetime
 
+from app.models import User
+from app import app, db
+from app.forms import LoginForm, RegistrationForm, EditProfileForm
 
 @app.route('/')
 @app.route('/index')
@@ -46,9 +47,11 @@ def login():
 
 #       There are actually three possible cases that need to be considered to determine where to redirect after a successful login:
 
-#         If the login URL does not have a next argument, then the user is redirected to the index page.
-#         If the login URL includes a next argument that is set to a relative path (or in other words, a URL without the domain portion), then the user is redirected to that URL.
-#         If the login URL includes a next argument that is set to a full URL that includes a domain name, then the user is redirected to the index page.
+#       If the login URL does not have a next argument, then the user is redirected to the index page.
+#       If the login URL includes a next argument that is set to a relative path (or in other words, a URL without the domain portion),
+#       then the user is redirected to that URL.
+#       If the login URL includes a next argument that is set to a full URL that includes a domain name, then the user is redirected to the index page.
+
 #       The first and second cases are self-explanatory. The third case is in place to make the application more secure. 
 #       An attacker could insert a URL to a malicious site in the next argument, so the application only redirects when the URL is relative, 
 #       which ensures that the redirect stays within the same site as the application. To determine if the URL is relative or absolute, 
