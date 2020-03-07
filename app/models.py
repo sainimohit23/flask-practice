@@ -6,10 +6,14 @@ from app import login
 from hashlib import md5 # for avatars
 
 
+
+# Since this is an auxiliary table that has no data other than the foreign keys,
+# I created it without an associated model class.
 followers = db.Table('followers', 
-                    db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
-                    db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
+            db.Column('follower_id', db.Integer, db.ForeignKey('user.id')),
+            db.Column('followed_id', db.Integer, db.ForeignKey('user.id'))
 )
+
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -44,7 +48,7 @@ class User(UserMixin, db.Model):
             self.followed.append(user)
     
     def unfollow(self, user):
-        if not self.is_following(user):
+        if self.is_following(user):
             self.followed.remove(user)
 
     def is_following(self, user):
@@ -85,6 +89,3 @@ class Post(db.Model):
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
-
-# Since this is an auxiliary table that has no data other than the foreign keys,
-# I created it without an associated model class.
