@@ -1,6 +1,8 @@
 {% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
-{% block content %}
+
+{#{% block content %}
     <h1>Hi, {{ current_user.username }}!</h1>
     <form action="" method="POST">
         <!-- TO prevent crashing in case this template is rendered from `explore` route -->
@@ -30,4 +32,33 @@
     {% if next_url %}
         <a href="{{ next_url }}">Older posts</a>
     {% endif %}
+{% endblock %}#}
+
+
+{% block app_content %}
+<h1>Hi, {{ current_user.username }}!</h1>
+{% if form %}
+{{ wtf.quick_form(form) }}
+<br>
+{%endif%}
+
+{% for post in posts %}
+{# old code to display posts from dictionary, it can also work with database 
+         <div><p>{{ post.author.username }} says: <b>{{ post.body }}</b></p></div> #}
+{% include '_post.html' %}
+{% endfor %}
+<nav aria-label="...">
+    <ul class="pager">
+        <li class="previous{% if not prev_url %} disabled{% endif %}">
+            <a href="{{ prev_url or '#' }}">
+                <span aria-hidden="true">&larr;</span> Newer posts
+            </a>
+        </li>
+        <li class="next{% if not next_url %} disabled{% endif %}">
+            <a href="{{ next_url or '#' }}">
+                Older posts <span aria-hidden="true">&rarr;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
 {% endblock %}
